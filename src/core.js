@@ -8,7 +8,7 @@ let Core = {};
 Core.init = (() => {
     
     // Create components
-    Core.g = new Graphics();
+    Core.g = new Graphics(Core.onLoaded);
     Core.scenes = [];
 
     // Set default events
@@ -23,16 +23,31 @@ Core.init = (() => {
 });
 
 
+// Called when content is loaded
+Core.onLoaded = () => {
+
+    // Activate current scene
+    let a = Core.activeScene;
+    if(a != null && a.activate != null) {
+
+        a.activate(Core.g);
+    }
+}
+
+
 // Keyboard event
 Core.keyDown = (e) => {
 
     e.preventDefault();
-    
+
+    // Skip if still loading something
+    if(!Core.g.loaded) return;
+
     // Call scene function
     let a = Core.activeScene;
     if(a != null && a.keyPressed != null) {
 
-        a.keyPressed(e.keyCode);
+        a.keyPressed(e.keyCode, Core.g);
     }
 }
 
@@ -41,7 +56,10 @@ Core.keyDown = (e) => {
 Core.loop = ((ts) => {
 
     // Draw frame
-    Core.draw();
+    if(Core.g.loaded) {
+
+        Core.draw();
+    }
 
     // Next frame
     window.requestAnimationFrame((ts) => Core.loop(ts));
