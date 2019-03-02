@@ -5,4 +5,4 @@ git add style.css
 git add git.sh
 git add README.md
 git add dev
-git add src
+git add res
