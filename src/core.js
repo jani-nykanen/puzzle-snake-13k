@@ -9,12 +9,16 @@ Core.init = (() => {
     
     // Create components
     Core.g = new Graphics();
+    Core.scenes = [];
 
     // Set default events
     window.addEventListener("resize", () => 
         Core.g.resize(window.innerWidth, window.innerHeight)
     );
     window.addEventListener("keydown", (e) => Core.keyDown(e));
+
+    // Set default values
+    Core.activeScene = null;
 
 });
 
@@ -24,7 +28,12 @@ Core.keyDown = (e) => {
 
     e.preventDefault();
     
-    // TODO: Call something
+    // Call scene function
+    let a = Core.activeScene;
+    if(a != null && a.keyPressed != null) {
+
+        a.keyPressed(e.keyCode);
+    }
 }
 
 
@@ -50,9 +59,17 @@ Core.draw = (() => {
 // Run
 Core.run = (() => {
 
-    // Initialize
-    Core.init();
-
     // Loop
     window.requestAnimationFrame((ts) => Core.loop(ts));
+});
+
+
+// Add a scene
+Core.addScene = ((s, name, active=false) => {
+
+    Core.scenes[name] = s;
+    if(active) {
+
+        Core.activeScene = s;
+    }
 });
