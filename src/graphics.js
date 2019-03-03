@@ -102,6 +102,13 @@ _p.fill = function(color) {
 // Put a character to the screen
 _p.putchr = function(c, x, y) {
 
+    // Convert to an integer if not already
+    if(typeof(c) != "number") {
+
+        c = Number(c);
+    }
+    c = (c|0) % 256;
+
     // Check if in the range
     if(x < 0 || y < 0 || 
        x >= this.w || y >= this.h) {
@@ -114,6 +121,21 @@ _p.putchr = function(c, x, y) {
     this.ubuffer[i] = true;
 
     this.redraw = true;
+}
+
+
+// Put a 2x2 square
+_p.putsqr = function(sx, sy, dx, dy) {
+    
+    let c;
+    for(let y = 0; y < 2; ++ y) {
+
+        for(let x = 0; x < 2; ++ x) {
+
+            c = (sy+y)*16 + sx+x;
+            this.putchr(c, dx+x, dy+y);  
+        }
+    }
 }
 
 
