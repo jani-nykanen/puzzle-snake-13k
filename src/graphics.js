@@ -39,6 +39,10 @@ let Graphics = function(loadCB) {
         this.buffer[i] = 0;
         this.ubuffer = true;
     }
+
+    // Translation
+    this.tx = 0;
+    this.ty = 0;
 }
 
 let _p = Graphics.prototype;
@@ -99,8 +103,19 @@ _p.fill = function(color) {
 }
 
 
+// Translate
+_p.translate = function(x=0, y=0) {
+
+    this.tx = x;
+    this.ty = y;
+}
+
+
 // Put a character to the screen
 _p.putchr = function(c, x, y) {
+
+    x += this.tx;
+    y += this.ty;
 
     // Convert to an integer if not already
     if(typeof(c) != "number") {

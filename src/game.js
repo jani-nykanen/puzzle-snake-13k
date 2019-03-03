@@ -46,15 +46,25 @@ _g.drawInfo = function(g) {
         g.putchr(17, s+1+i, 1+2);
         // Middle
         g.putchr(0, s+1+i, 2);
+
+        // Shadow
+        g.putchr(15, s+1+i, 4);
     }
 
     // Left & right
     g.putchr(12, s, 2);
     g.putchr(13, s+w-1, 2);
 
+    // Missing shadow pieces
+    for(let i = 0; i < 3; ++ i)
+        g.putchr(15, s+w, 4-i);
+    g.putchr(15, s+w-1, 4);
+
+    //
+    // Draw text
+    //
     // Stage index
     g.putstr("STAGE 1", 3, 2);
-
     // Passwor
     g.putstr("PASSW: 0000000", g.w/2-1, 2);
 }
@@ -78,6 +88,6 @@ _g.activate = function(g) {
 // Keyboard event
 _g.keyPressed = function(k, g) {
 
-    g.putstr(String(k), 16, this.row ++);
+    this.stage.keyPressed(k, g);
 }
 
