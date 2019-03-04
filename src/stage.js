@@ -33,6 +33,10 @@ let Stage = function(index) {
     this.cx = 0;
     this.cy = 0;
 
+    // Item counts
+    this.keyCount = 0;
+    this.gemCount = 0;
+
     // Parse game objects
     this.parse();
 }
@@ -56,6 +60,16 @@ _s.parse = function() {
             // Player
             case 1:
                 this.snake = new Snake(x, y);
+                break;
+
+            // Key
+            case 5:
+                ++ this.keyCount;
+                break;
+
+            // Gem
+            case 3:
+                ++ this.gemCount;
                 break;
 
             default:
@@ -93,6 +107,100 @@ _s.makeSolid = function(x, y) {
         return;
     
     this.data[y*this.w+x] = 1;   
+}
+
+
+// Remove locks
+_s.removeLocks = function(g) {
+
+    g.translate(this.cx, this.cy);
+
+    for(let i = 0; i < this.data.length; ++ i) {
+
+        if(this.data[i] == 4) {
+
+            this.data[i] = 0;
+            // Black square
+            g.putsqr(3, 1, ((i%this.w)|0)*2, ((i/this.w)|0)*2);
+        }
+    }
+
+    g.translate();
+}
+
+
+// Toggle blocks
+_s.toggleBlocks = function(g) {
+
+    g.translate(this.cx, this.cy);
+
+    let dx, dy;
+    let t;
+    for(let i = 0; i < this.data.length; ++ i) {
+
+        t = this.data[i];
+        if(t != 6 && t != 7)
+            continue;
+
+        dx = ((i%this.w)|0)*2;
+        dy = ((i/this.w)|0)*2;
+
+        // Make solid
+        if(t == 6) {
+
+            this.data[i] = 7;
+            g.putsqr(6*2, 10, dx, dy);
+        }
+        // Make non-solid
+        else {
+
+            this.data[i] = 6;
+            g.putsqr(5*2, 10, dx, dy);
+        }
+    }
+
+    g.translate();
+}
+
+
+// Tile event
+_s.tileEvent = function(g, x, y) {
+
+    if(x < 0 || y < 0 || x >= this.w || y >= this.h)
+        return;
+
+    let t = this.data[y*this.w+x];
+    switch(t) {
+
+    // Gem
+    case 3:
+
+        if(-- this.gemCount <= 0) {
+
+            console.log("Victory!");
+        }
+        break;
+
+    // Key
+    case 5:
+
+        if(-- this.keyCount <= 0) {
+
+            this.removeLocks(g);
+        }
+        break;
+
+    // Button
+    case 8:
+
+        this.toggleBlocks(g);
+        break;
+
+
+    default:
+        break;
+    };
+
 }
 
 
