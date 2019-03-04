@@ -57,6 +57,20 @@ _sn.control = function(k, g, stage) {
 // Draw
 _sn.draw = function(g, dir, tx, ty) {
 
+    //
+    // Update the previous tile
+    //
+    // Tail
+    if(this.oldDir == -1) {
+
+        g.putsqr(4 + dir*2, 8, this.x*2, this.y*2);
+    }
+    // Straight body
+    if(this.oldDir == dir) {
+
+        g.putsqr((dir % 2 == 0) ? 0 : 2, 8, this.x*2, this.y*2);
+    }
+
     // Draw head
     g.putsqr(dir*2, 6, tx*2, ty*2);
 }
