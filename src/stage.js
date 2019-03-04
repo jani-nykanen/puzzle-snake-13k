@@ -2,14 +2,16 @@
 // (c) 2019 Jani Nykänen
 
 // TEMPORARY STAGE DATA!
-const DATA = [2,2,2,2,2,2,2,2,
+const DATA = [
+    2,2,2,2,2,2,2,2,
     2,0,3,0,2,0,3,2,
     2,6,2,7,8,0,0,2,
     2,0,0,0,3,2,7,2,
-    2,5,0,0,0,0,0,2,
-    2,0,1,0,5,2,0,2,
+    2,5,0,0,0,0,4,2,
+    0,7,1,0,5,2,0,0,
     2,0,2,0,8,4,3,2,
-    2,2,2,2,2,2,2,2];
+    2,2,2,2,2,2,2,2
+];
 
 // Stage dimensions. We assume the stage
 // size is always the same, so we can save
@@ -64,7 +66,7 @@ _s.parse = function() {
 
             // Key
             case 5:
-                ++ this.keyCount;
+                // ++ this.keyCount;
                 break;
 
             // Gem
@@ -88,7 +90,7 @@ _s.keyPressed = function(k, g) {
 
 
 // Is a solid tile
-_s.isSolid = function(x, y) {
+_s.isSolid = function(g, x, y) {
 
     const SOLID = [1, 2, 4, 7];
     
@@ -96,6 +98,15 @@ _s.isSolid = function(x, y) {
     if(x < 0 || y < 0 || x >= this.w || y >= this.h)
         return false;
 
+    let t = this.data[y*this.w+x];
+
+    // If lock and has a key, open
+    if(this.keyCount > 0 && t == 4) {
+
+        this.openLock(g, x, y);
+        return true;
+    }
+    // Otherwise check if any solid tile
     return SOLID.includes(this.data[y*this.w+x]);
 }
 
@@ -110,22 +121,20 @@ _s.makeSolid = function(x, y) {
 }
 
 
-// Remove locks
-_s.removeLocks = function(g) {
+// Open a lock
+_s.openLock = function(g, x, y) {
 
+    // We assume all the required checks are done
+    // in the "is solid" method
+
+    -- this.keyCount;
+    this.data[y*this.w+x] = 0;
+
+    // Draw black square
     g.translate(this.cx, this.cy);
-
-    for(let i = 0; i < this.data.length; ++ i) {
-
-        if(this.data[i] == 4) {
-
-            this.data[i] = 0;
-            // Black square
-            g.putsqr(3, 1, ((i%this.w)|0)*2, ((i/this.w)|0)*2);
-        }
-    }
-
+    g.putsqr(3, 1, x*2, y*2);
     g.translate();
+
 }
 
 
@@ -184,10 +193,7 @@ _s.tileEvent = function(g, x, y) {
     // Key
     case 5:
 
-        if(-- this.keyCount <= 0) {
-
-            this.removeLocks(g);
-        }
+        ++ this.keyCount;
         break;
 
     // Button

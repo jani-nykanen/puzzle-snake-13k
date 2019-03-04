@@ -70,6 +70,17 @@ _g.drawInfo = function(g) {
 }
 
 
+// Reset
+_g.reset = function(g) {
+
+    // Recreate stage
+    this.stage = new Stage(1);
+
+    // Draw stage
+    this.stage.draw(g, 8, 6);
+}
+
+
 // Called when the scene
 // is made active
 _g.activate = function(g) {
@@ -81,13 +92,20 @@ _g.activate = function(g) {
 
     // Draw stage
     this.stage.draw(g, 8, 6);
-    
 }
 
 
 // Keyboard event
 _g.keyPressed = function(k, g) {
 
+    // Restart
+    if(k == KeyRestart) {
+
+        this.reset(g);
+        return;
+    }
+
+    // Any key press
     this.stage.keyPressed(k, g);
 }
 

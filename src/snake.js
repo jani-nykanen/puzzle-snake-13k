@@ -31,11 +31,14 @@ _sn.control = function(k, g, stage) {
     else if(k == KeyDown) { ++ ty; dir = 2; }
     else if(k == KeyUp) { -- ty; dir = 0; }
 
+    tx = negMod(tx, stage.w);
+    ty = negMod(ty, stage.h);
+
     // No movement detected
     if(dir == -1) return;
 
     // Check if free tile
-    if(stage.isSolid(tx, ty)) return;
+    if(stage.isSolid(g, tx, ty)) return;
 
     // Redraw
     g.translate(stage.cx, stage.cy);
