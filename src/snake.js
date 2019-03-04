@@ -66,9 +66,40 @@ _sn.draw = function(g, dir, tx, ty) {
         g.putsqr(4 + dir*2, 8, this.x*2, this.y*2);
     }
     // Straight body
-    if(this.oldDir == dir) {
+    else if(this.oldDir == dir) {
 
         g.putsqr((dir % 2 == 0) ? 0 : 2, 8, this.x*2, this.y*2);
+    }
+    // Curve
+    else {
+
+        // Horizontal to vertical
+        if(this.oldDir % 2 != 0) {
+
+            if(dir == 0) {
+
+                g.putsqr(8 + (this.oldDir == 1 ? 0 : 2), 
+                    6, this.x*2, this.y*2);
+            }
+            else if(dir == 2) {
+
+                g.putsqr(12 + (this.oldDir == 3 ? 0 : 2), 
+                    6, this.x*2, this.y*2);
+            }
+        }
+        else {
+
+            if(dir == 1) {
+
+                g.putsqr(10 + (this.oldDir == 0 ? 2 : 0), 
+                    6, this.x*2, this.y*2);
+            }
+            else if(dir == 3) {
+
+                g.putsqr(8 + (this.oldDir == 2 ? 0 : 6), 
+                    6, this.x*2, this.y*2);
+            }
+        }
     }
 
     // Draw head
