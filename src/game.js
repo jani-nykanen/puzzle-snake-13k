@@ -6,6 +6,19 @@ let Game = function() {
 
     // Create components
     this.stage = new Stage(1);
+    this.pause = new Menu(
+        [
+            "RESUME",
+            "RESTART",
+            "QUIT"
+        ], 
+        [
+        (g) => this.pause.deactivate(g),
+        (g) => this.reset(g),
+        (g) => {console.log("Not implemented!"); }    
+        ],
+        16-4, 12 - 3, 8, 5
+    );
 
     this.row = 1;
 }
@@ -25,40 +38,8 @@ _g.fillBg = function(g) {
 // Draw an info box
 _g.drawInfo = function(g) {
     
-    let w = g.w-4;
-    let s = 2;
-
-    //
     // Draw frame
-    //
-    // Corners
-    g.putchr(9, s, 1);
-    g.putchr(11, s + w-1, 1);
-    g.putchr(16, s, 1 + 2);
-    g.putchr(18, s + w-1, 1 + 2);
-
-    // Top, bottom & middle
-    for(let i = 0; i < w-2; ++ i) {
-
-        // Top
-        g.putchr(10, s+1+i, 1);
-        // Bottom
-        g.putchr(17, s+1+i, 1+2);
-        // Middle
-        g.putchr(0, s+1+i, 2);
-
-        // Shadow
-        g.putchr(15, s+1+i, 4);
-    }
-
-    // Left & right
-    g.putchr(12, s, 2);
-    g.putchr(13, s+w-1, 2);
-
-    // Missing shadow pieces
-    for(let i = 0; i < 3; ++ i)
-        g.putchr(15, s+w, 4-i);
-    g.putchr(15, s+w-1, 4);
+    drawBoxForText(g, 3, 2, g.w-6, 1, true);
 
     //
     // Draw text
@@ -72,6 +53,9 @@ _g.drawInfo = function(g) {
 
 // Reset
 _g.reset = function(g) {
+
+    // Deactivate pause screen
+    this.pause.deactivate(g, false);
 
     // Recreate stage
     this.stage = new Stage(1);
@@ -98,8 +82,20 @@ _g.activate = function(g) {
 // Keyboard event
 _g.keyPressed = function(k, g) {
 
+    if(this.pause.active) {
+
+        this.pause.keyPressed(k, g);
+        return;
+    }
+
+    // Pause
+    if(k == KeyStart) {
+        
+        this.pause.activate(g);
+        return;
+    }
     // Restart
-    if(k == KeyRestart) {
+    else if(k == KeyRestart) {
 
         this.reset(g);
         return;

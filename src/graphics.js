@@ -39,12 +39,16 @@ let Graphics = function(loadCB) {
         this.buffer[i] = 0;
         this.ubuffer = true;
     }
+    // Buffer memory
+    this.membuf = null;
 
     // Translation
     this.tx = 0;
     this.ty = 0;
 }
 
+
+// Why did I name this "_p", not "_g"...?
 let _p = Graphics.prototype;
 
 
@@ -209,4 +213,23 @@ _p.refresh = function() {
     }
 
     this.redraw = false;
+}
+
+
+// Store current buffer to memory
+_p.store = function() {
+
+    this.membuf = this.buffer.slice();
+}
+
+
+// Restore
+_p.restore = function() {
+
+    for(let i = 0; i < this.buffer.length; ++ i) {
+
+        this.ubuffer[i] = true;
+        this.buffer[i] = this.membuf[i];
+    }
+    this.redraw = true;
 }
