@@ -57,6 +57,9 @@ _sn.control = function(k, g, stage) {
 
     // Store old direction
     this.oldDir = dir;
+
+    // Is stick?
+    return stage.isStuck(g, this.x, this.y);
 }
 
 

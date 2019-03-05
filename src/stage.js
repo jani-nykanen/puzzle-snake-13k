@@ -85,12 +85,12 @@ _s.parse = function() {
 // Key event
 _s.keyPressed = function(k, g) {
 
-    this.snake.control(k, g, this);
+    return this.snake.control(k, g, this);
 }
 
 
 // Is a solid tile
-_s.isSolid = function(g, x, y) {
+_s.isSolid = function(g, x, y, openLock=true) {
 
     const SOLID = [1, 2, 4, 7];
     
@@ -103,8 +103,10 @@ _s.isSolid = function(g, x, y) {
     // If lock and has a key, open
     if(this.keyCount > 0 && t == 4) {
 
-        this.openLock(g, x, y);
-        return true;
+        if(openLock) 
+            this.openLock(g, x, y);
+
+        return openLock;
     }
     // Otherwise check if any solid tile
     return SOLID.includes(this.data[y*this.w+x]);
@@ -207,6 +209,19 @@ _s.tileEvent = function(g, x, y) {
         break;
     };
 
+}
+
+
+// Check if stuck
+_s.isStuck = function(g, x, y) {
+    
+    if(x < 1 || y < 1 || x >= this.w-1 || y >= this.h-1)
+        return false;
+
+    return this.isSolid(g, x-1, y, false) &&
+           this.isSolid(g, x+1, y, false) &&
+           this.isSolid(g, x, y-1, false) &&
+           this.isSolid(g, x, y+1, false)
 }
 
 

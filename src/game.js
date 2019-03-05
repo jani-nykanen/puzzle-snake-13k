@@ -102,6 +102,17 @@ _g.keyPressed = function(k, g) {
     }
 
     // Any key press
-    this.stage.keyPressed(k, g);
+    if(this.stage.keyPressed(k, g)) {
+
+        // Draw "stuck"
+        drawBoxForText(g, 12, 8, 8, 1, false);
+        g.putstr("STUCK!", 13, 8);
+
+        // Reset stage after a second
+        Core.setTimer(1000, (g) => {
+
+            this.reset(g);
+        });
+    }
 }
 

@@ -19,6 +19,11 @@ Core.init = (() => {
 
     // Set default values
     Core.activeScene = null;
+    Core.timerFunc = null;
+    Core.timer = 0;
+
+    // Needed for determining the delta time
+    Core.oldTime = 0;
 
 });
 
@@ -41,7 +46,10 @@ Core.keyDown = (e) => {
     e.preventDefault();
 
     // Skip if still loading something
-    if(!Core.g.loaded) return;
+    // or timer is active
+    if(!Core.g.loaded ||
+        Core.timer > 0) 
+        return;
 
     // Call scene function
     let a = Core.activeScene;
@@ -52,17 +60,40 @@ Core.keyDown = (e) => {
 }
 
 
+// Set timer
+Core.setTimer = (time, cb) => {
+
+    Core.timer = time;
+    Core.timerFunc = cb;
+}
+
+
 // Loop
 Core.loop = ((ts) => {
 
+    let delta = ts - Core.oldTime;
+    if(Core.timer > 0) {
+
+        Core.timer -= delta;
+        // Call timer event function
+        if(Core.timer <= 0 && 
+           Core.timerFunc != null) {
+
+            Core.timerFunc(Core.g);
+        }
+    }
+    
     // Draw frame
     if(Core.g.loaded) {
 
         Core.draw();
     }
 
+    Core.oldTime = ts;
+
     // Next frame
     window.requestAnimationFrame((ts) => Core.loop(ts));
+    
 });
 
 
