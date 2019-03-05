@@ -35,10 +35,12 @@ _sn.control = function(k, g, stage) {
     ty = negMod(ty, stage.h);
 
     // No movement detected
-    if(dir == -1) return;
+    if(dir == -1) 
+        return 0;
 
     // Check if free tile
-    if(stage.isSolid(g, tx, ty)) return;
+    if(stage.isSolid(g, tx, ty)) 
+        return 0;
 
     // Redraw
     g.translate(stage.cx, stage.cy);
@@ -58,8 +60,15 @@ _sn.control = function(k, g, stage) {
     // Store old direction
     this.oldDir = dir;
 
-    // Is stick?
-    return stage.isStuck(g, this.x, this.y);
+    // Has all the gems?
+    if(stage.gemCount <= 0)
+        return 2;
+
+    // Is stuck?
+    if(stage.isStuck(g, this.x, this.y))
+        return 1;
+
+    return 0;
 }
 
 

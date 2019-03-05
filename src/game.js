@@ -101,12 +101,21 @@ _g.keyPressed = function(k, g) {
         return;
     }
 
-    // Any key press
-    if(this.stage.keyPressed(k, g)) {
+    // Any key 
+    let ret = this.stage.keyPressed(k, g);
+    if(ret != 0) {
 
-        // Draw "stuck"
-        drawBoxForText(g, 12, 8, 8, 1, false);
-        g.putstr("STUCK!", 13, 8);
+        // Draw message
+        if(ret == 1) {
+
+            drawBoxForText(g, 12, 8, 8, 1, false);
+            g.putstr("STUCK!", 13, 8);
+        }
+        else {
+
+            drawBoxForText(g, 9, 8, 14, 1, false);
+            g.putstr("STAGE CLEAR!", 10, 8);
+        }
 
         // Reset stage after a second
         Core.setTimer(1000, (g) => {

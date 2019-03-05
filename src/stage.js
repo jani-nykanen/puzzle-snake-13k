@@ -64,11 +64,6 @@ _s.parse = function() {
                 this.snake = new Snake(x, y);
                 break;
 
-            // Key
-            case 5:
-                // ++ this.keyCount;
-                break;
-
             // Gem
             case 3:
                 ++ this.gemCount;
@@ -186,10 +181,7 @@ _s.tileEvent = function(g, x, y) {
     // Gem
     case 3:
 
-        if(-- this.gemCount <= 0) {
-
-            console.log("Victory!");
-        }
+        -- this.gemCount;
         break;
 
     // Key
