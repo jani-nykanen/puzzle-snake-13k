@@ -77,9 +77,8 @@ _s.isSolid = function(g, x, y, openLock=true) {
 
     const SOLID = [1, 2, 4, 7];
     
-    // If outside the screen, always solid
-    if(x < 0 || y < 0 || x >= this.w || y >= this.h)
-        return false;
+    x = negMod(x, this.w);
+    y = negMod(y, this.h);
 
     let t = this.data[y*this.w+x];
 
@@ -99,8 +98,8 @@ _s.isSolid = function(g, x, y, openLock=true) {
 // Make a tile solid
 _s.makeSolid = function(x, y) {
 
-    if(x < 0 || y < 0 || x >= this.w || y >= this.h)
-        return;
+    x = negMod(x, this.w);
+    y = negMod(y, this.h);
     
     this.data[y*this.w+x] = 1;   
 }
@@ -160,8 +159,8 @@ _s.toggleBlocks = function(g) {
 // Tile event
 _s.tileEvent = function(g, x, y) {
 
-    if(x < 0 || y < 0 || x >= this.w || y >= this.h)
-        return;
+    x = negMod(x, this.w);
+    y = negMod(y, this.h);
 
     let t = this.data[y*this.w+x];
     switch(t) {
@@ -195,8 +194,8 @@ _s.tileEvent = function(g, x, y) {
 // Check if stuck
 _s.isStuck = function(g, x, y) {
     
-    if(x < 1 || y < 1 || x >= this.w-1 || y >= this.h-1)
-        return false;
+    x = negMod(x, this.w);
+    y = negMod(y, this.h);
 
     return this.isSolid(g, x-1, y, false) &&
            this.isSolid(g, x+1, y, false) &&
