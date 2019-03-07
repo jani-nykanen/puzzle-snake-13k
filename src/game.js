@@ -4,8 +4,11 @@
 // Constructor
 let Game = function() {
 
+    // Stage index
+    this.stageIndex = 1;
+
     // Create components
-    this.stage = new Stage(1);
+    this.stage = new Stage(this.stageIndex);
     this.pause = new Menu(
         [
             "RESUME",
@@ -45,7 +48,7 @@ _g.drawInfo = function(g) {
     // Draw text
     //
     // Stage index
-    g.putstr("STAGE 1", 3, 2);
+    g.putstr("STAGE " + String(this.stageIndex), 3, 2);
     // Passwor
     g.putstr("PASSW: 0000000", g.w/2-1, 2);
 }
@@ -58,10 +61,12 @@ _g.reset = function(g) {
     this.pause.deactivate(g, false);
 
     // Recreate stage
-    this.stage = new Stage(1);
+    this.stage = new Stage(this.stageIndex);
 
     // Draw stage
     this.stage.draw(g, 8, 6);
+    // Draw info
+    this.drawInfo(g);
 }
 
 
@@ -115,6 +120,8 @@ _g.keyPressed = function(k, g) {
 
             drawBoxForText(g, 9, 8, 14, 1, false);
             g.putstr("STAGE CLEAR!", 10, 8);
+
+            ++ this.stageIndex;
         }
 
         // Reset stage after a second

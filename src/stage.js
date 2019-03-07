@@ -1,18 +1,6 @@
 // Stage
 // (c) 2019 Jani Nykänen
 
-// TEMPORARY STAGE DATA!
-const DATA = [
-    2,2,2,2,2,2,2,2,
-    2,0,3,0,2,0,3,2,
-    2,6,2,7,8,0,0,2,
-    2,0,0,0,3,2,7,2,
-    2,5,0,0,0,0,4,2,
-    0,7,1,0,5,2,0,0,
-    2,0,2,0,8,4,3,2,
-    2,2,2,2,2,2,2,2
-];
-
 // Stage dimensions. We assume the stage
 // size is always the same, so we can save
 // a few bytes
@@ -29,7 +17,7 @@ let Stage = function(index) {
     this.index = index;
 
     // Copy data
-    this.data = DATA.slice();
+    this.data = MAP_DATA[index -1].slice();
 
     // Top-left corner
     this.cx = 0;
