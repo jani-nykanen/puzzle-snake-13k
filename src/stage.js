@@ -66,14 +66,14 @@ _s.parse = function() {
 
 
 // Key event
-_s.keyPressed = function(k, g) {
+_s.keyPressed = function(k, g, a) {
 
-    return this.snake.control(k, g, this);
+    return this.snake.control(k, g, a, this);
 }
 
 
 // Is a solid tile
-_s.isSolid = function(g, x, y, openLock=true) {
+_s.isSolid = function(g, a, x, y, openLock=true) {
 
     const SOLID = [1, 2, 4, 7];
     
@@ -86,7 +86,7 @@ _s.isSolid = function(g, x, y, openLock=true) {
     if(this.keyCount > 0 && t == 4) {
 
         if(openLock) 
-            this.openLock(g, x, y);
+            this.openLock(g, a, x, y);
 
         return openLock;
     }
@@ -106,7 +106,7 @@ _s.makeSolid = function(x, y) {
 
 
 // Open a lock
-_s.openLock = function(g, x, y) {
+_s.openLock = function(g, a, x, y) {
 
     // We assume all the required checks are done
     // in the "is solid" method
@@ -118,6 +118,9 @@ _s.openLock = function(g, x, y) {
     g.translate(this.cx, this.cy);
     g.putsqr(3, 1, x*2, y*2);
     g.translate();
+
+    // Play sound
+    a.play("lock");
 
 }
 
@@ -157,7 +160,7 @@ _s.toggleBlocks = function(g) {
 
 
 // Tile event
-_s.tileEvent = function(g, x, y) {
+_s.tileEvent = function(g, a, x, y) {
 
     x = negMod(x, this.w);
     y = negMod(y, this.h);
@@ -169,22 +172,27 @@ _s.tileEvent = function(g, x, y) {
     case 3:
 
         -- this.gemCount;
+        a.play("beep2");
         break;
 
     // Key
     case 5:
 
         ++ this.keyCount;
+        a.play("beep3");
         break;
 
     // Button
     case 8:
 
         this.toggleBlocks(g);
+        a.play("beep4");
         break;
 
 
     default:
+
+        a.play("beep1");
         break;
     };
 
@@ -197,10 +205,10 @@ _s.isStuck = function(g, x, y) {
     x = negMod(x, this.w);
     y = negMod(y, this.h);
 
-    return this.isSolid(g, x-1, y, false) &&
-           this.isSolid(g, x+1, y, false) &&
-           this.isSolid(g, x, y-1, false) &&
-           this.isSolid(g, x, y+1, false)
+    return this.isSolid(g, null, x-1, y, false) &&
+           this.isSolid(g, null, x+1, y, false) &&
+           this.isSolid(g, null, x, y-1, false) &&
+           this.isSolid(g, null, x, y+1, false)
 }
 
 

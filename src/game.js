@@ -87,7 +87,7 @@ _g.activate = function(g) {
 
 
 // Keyboard event
-_g.keyPressed = function(k, g) {
+_g.keyPressed = function(k, g, a) {
 
     if(this.pause.active) {
 
@@ -109,7 +109,7 @@ _g.keyPressed = function(k, g) {
     }
 
     // Any key 
-    let ret = this.stage.keyPressed(k, g);
+    let ret = this.stage.keyPressed(k, g, a);
     if(ret != 0) {
 
         // Draw message

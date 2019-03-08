@@ -18,7 +18,7 @@ let _sn = Snake.prototype;
 
 
 // Control
-_sn.control = function(k, g, stage) {
+_sn.control = function(k, g, a, stage) {
 
     let tx = this.x;
     let ty = this.y;
@@ -39,7 +39,7 @@ _sn.control = function(k, g, stage) {
         return 0;
 
     // Check if free tile
-    if(stage.isSolid(g, tx, ty)) 
+    if(stage.isSolid(g, a, tx, ty)) 
         return 0;
 
     // Redraw
@@ -55,18 +55,24 @@ _sn.control = function(k, g, stage) {
     this.y = ty;
 
     // Tile event
-    stage.tileEvent(g, this.x, this.y);
+    stage.tileEvent(g, a, this.x, this.y);
 
     // Store old direction
     this.oldDir = dir;
 
     // Has all the gems?
-    if(stage.gemCount <= 0)
+    if(stage.gemCount <= 0) {
+
+        a.play("win");
         return 2;
+    }
 
     // Is stuck?
-    if(stage.isStuck(g, this.x, this.y))
+    if(stage.isStuck(g, this.x, this.y)) {
+
+        a.play("stuck");
         return 1;
+    }
 
     return 0;
 }

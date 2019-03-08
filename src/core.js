@@ -9,6 +9,7 @@ Core.init = (() => {
     
     // Create components
     Core.g = new Graphics(Core.onLoaded);
+    Core.a = new AudioManager();
     Core.scenes = [];
 
     // Set default events
@@ -55,7 +56,7 @@ Core.keyDown = (e) => {
     let a = Core.activeScene;
     if(a != null && a.keyPressed != null) {
 
-        a.keyPressed(e.keyCode, Core.g);
+        a.keyPressed(e.keyCode, Core.g, Core.a);
     }
 }
 
