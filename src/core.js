@@ -38,6 +38,9 @@ Core.onLoaded = () => {
 
         a.activate(Core.g);
     } 
+
+    // Hide "loading" text
+    document.getElementById("loading").style.display = "none";
 }
 
 
