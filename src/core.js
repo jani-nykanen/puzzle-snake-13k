@@ -37,7 +37,7 @@ Core.onLoaded = () => {
     if(a != null && a.activate != null) {
 
         a.activate(Core.g);
-    }
+    } 
 }
 
 
@@ -83,7 +83,7 @@ Core.loop = ((ts) => {
             Core.timerFunc(Core.g);
         }
     }
-    
+
     // Draw frame
     if(Core.g.loaded) {
 

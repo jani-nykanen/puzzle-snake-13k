@@ -53,7 +53,7 @@ _m.deactivate = function(g, redraw=true) {
 
 
 // Key pressed
-_m.keyPressed = function(k, g) {
+_m.keyPressed = function(k, g, a) {
 
     // Move cursor
     let npos = this.cpos;
@@ -70,6 +70,9 @@ _m.keyPressed = function(k, g) {
         this.cpos = npos;
         // Redraw
         this.draw(g);
+
+        // Sound
+        a.play("beep1");
     }
 
     // Enter pressed
@@ -79,6 +82,7 @@ _m.keyPressed = function(k, g) {
 
             this.cbs[this.cpos] (g);
         }
+        a.play("pause");
     }
     
 }

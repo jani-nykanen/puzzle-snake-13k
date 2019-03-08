@@ -91,7 +91,7 @@ _g.keyPressed = function(k, g, a) {
 
     if(this.pause.active) {
 
-        this.pause.keyPressed(k, g);
+        this.pause.keyPressed(k, g, a);
         return;
     }
 
@@ -99,12 +99,14 @@ _g.keyPressed = function(k, g, a) {
     if(k == KeyStart) {
         
         this.pause.activate(g);
+        a.play("pause");
         return;
     }
     // Restart
     else if(k == KeyRestart) {
 
         this.reset(g);
+        a.play("pause");
         return;
     }
 
