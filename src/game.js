@@ -50,7 +50,9 @@ _g.drawInfo = function(g) {
     // Stage index
     g.putstr("STAGE " + String(this.stageIndex), 3, 2);
     // Passwor
-    g.putstr("PASSW: 0000000", g.w/2-1, 2);
+    g.putstr("PASSW: " + 
+         String(Passw.gen(this.stageIndex)).split("").reverse().join(""),
+         g.w/2-1, 2);
 }
 
 
