@@ -20,6 +20,9 @@ let AudioManager = function() {
 
     this.player = new Audio();
 
+    // Create sounds in another thread
+    
+
     // Sounds
     this.sounds = {};
     this.sounds.beep1 = jsfxr(BEEP1);

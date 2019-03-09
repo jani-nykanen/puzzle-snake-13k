@@ -4,11 +4,11 @@
 let main = () => {
 
     // Initialize
-    Core.init();
+    let c = new Core();
 
     // Add scenes
-    Core.addScene(new Game(), "game", true);
+    c.addScene(new Game(), "game", true);
 
     // Run
-    Core.run();
+    c.run();
 }

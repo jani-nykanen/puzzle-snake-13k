@@ -87,7 +87,9 @@ _g.activate = function(g) {
 
 
 // Keyboard event
-_g.keyPressed = function(k, g, a) {
+_g.keyPressed = function(k, g, ev) {
+
+    let a = ev.audio;
 
     if(this.pause.active) {
 
@@ -129,7 +131,7 @@ _g.keyPressed = function(k, g, a) {
         }
 
         // Reset stage after a second
-        Core.setTimer(1000, (g) => {
+        ev.timerEvent(1000, (g) => {
 
             this.reset(g);
         });

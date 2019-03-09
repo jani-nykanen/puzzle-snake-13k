@@ -1,42 +1,44 @@
 // Core
 // (c) 2019 Jani Nykänen
 
-let Core = {};
 
-
-// Initialize
-Core.init = (() => {
+// Constructor
+let Core = function() {
     
     // Create components
-    Core.g = new Graphics(Core.onLoaded);
-    Core.a = new AudioManager();
-    Core.scenes = [];
+    this.g = new Graphics(() => this.onLoaded());
+    this.a = new AudioManager();
+    this.evMan = new EventManager(this, this.a);
+    this.scenes = [];
 
     // Set default events
     window.addEventListener("resize", () => 
-        Core.g.resize(window.innerWidth, window.innerHeight)
+        this.g.resize(window.innerWidth, window.innerHeight)
     );
-    window.addEventListener("keydown", (e) => Core.keyDown(e));
+    window.addEventListener("keydown", (e) => this.keyDown(e));
 
     // Set default values
-    Core.activeScene = null;
-    Core.timerFunc = null;
-    Core.timer = 0;
+    this.activeScene = null;
+    this.timerFunc = null;
+    this.timer = 0;
 
     // Needed for determining the delta time
-    Core.oldTime = 0;
+    this.oldTime = 0;
 
-});
+};
+
+
+let _c = Core.prototype;
 
 
 // Called when content is loaded
-Core.onLoaded = () => {
+_c.onLoaded = function() {
 
     // Activate current scene
-    let a = Core.activeScene;
+    let a = this.activeScene;
     if(a != null && a.activate != null) {
 
-        a.activate(Core.g);
+        a.activate(this.g);
     } 
 
     // Hide "loading" text
@@ -45,84 +47,84 @@ Core.onLoaded = () => {
 
 
 // Keyboard event
-Core.keyDown = (e) => {
+_c.keyDown = function(e) {
 
     e.preventDefault();
 
     // Skip if still loading something
     // or timer is active
-    if(!Core.g.loaded ||
-        Core.timer > 0) 
+    if(!this.g.loaded ||
+        this.timer > 0) 
         return;
 
     // Call scene function
-    let a = Core.activeScene;
+    let a = this.activeScene;
     if(a != null && a.keyPressed != null) {
 
-        a.keyPressed(e.keyCode, Core.g, Core.a);
+        a.keyPressed(e.keyCode, this.g, this.evMan);
     }
 }
 
 
 // Set timer
-Core.setTimer = (time, cb) => {
+_c.setTimer = function(time, cb) {
 
-    Core.timer = time;
-    Core.timerFunc = cb;
+    this.timer = time;
+    this.timerFunc = cb;
 }
 
 
 // Loop
-Core.loop = ((ts) => {
+_c.loop = function(ts) {
 
-    let delta = ts - Core.oldTime;
-    if(Core.timer > 0) {
+    let delta = ts - this.oldTime;
+    if(this.timer > 0) {
 
-        Core.timer -= delta;
+        this.timer -= delta;
         // Call timer event function
-        if(Core.timer <= 0 && 
-           Core.timerFunc != null) {
+        if(this.timer <= 0 && 
+           this.timerFunc != null) {
 
-            Core.timerFunc(Core.g);
+            this.timerFunc(this.g);
         }
     }
 
     // Draw frame
-    if(Core.g.loaded) {
+    if(this.g.loaded) {
 
-        Core.draw();
+        this.draw();
     }
 
-    Core.oldTime = ts;
+    this.oldTime = ts;
 
     // Next frame
-    window.requestAnimationFrame((ts) => Core.loop(ts));
+    window.requestAnimationFrame((ts) => this.loop(ts));
     
-});
+};
 
 
 // Draw
-Core.draw = (() => {
+_c.draw = function() {
 
     // Refresh graphics
-    Core.g.refresh();
-});
+    this.g.refresh();
+};
 
 
 // Run
-Core.run = (() => {
+_c.run = function() {
 
     // Loop
-    window.requestAnimationFrame((ts) => Core.loop(ts));
-});
+    window.requestAnimationFrame((ts) => this.loop(ts));
+};
 
 
 // Add a scene
-Core.addScene = ((s, name, active=false) => {
+_c.addScene = function(s, name, active=false)  {
 
-    Core.scenes[name] = s;
+    this.scenes[name] = s;
     if(active) {
 
-        Core.activeScene = s;
+        this.activeScene = s;
     }
-});
+};
