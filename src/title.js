@@ -119,7 +119,7 @@ _t.keyPressed = function(k, g, ev) {
             this.drawPassword(g);
         }
         // Remove character
-        else if(this.pwString.length > 0 &&  k == 8) {
+        else if(this.pwString.length > 0 &&  k == KeyBack) {
 
             this.pwString = this.pwString.substr(0, this.pwString.length-1);
             this.drawPassword(g);
@@ -141,6 +141,13 @@ _t.keyPressed = function(k, g, ev) {
                 ev.changeScene("game", s);
             }
             
+        }
+        // Quit
+        else if(k == KeyCancel) {
+
+            a.play("stuck");
+            this.pwMode = false;
+            this.redraw(g);
         }
     }
     else {
