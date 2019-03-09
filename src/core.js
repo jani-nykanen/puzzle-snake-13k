@@ -131,7 +131,7 @@ _c.addScene = function(s, name, active=false)  {
 
 
 // Change a scene
-_c.changeScene = function(name) {
+_c.changeScene = function(name, p) {
 
     let s = this.scenes[name];
     if(s == null) return;
@@ -139,7 +139,7 @@ _c.changeScene = function(name) {
     this.activeScene = s;
     if(s.activate != null) {
 
-        s.activate(this.g);
+        s.activate(this.g, p);
     }
 
 }

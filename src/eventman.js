@@ -21,7 +21,7 @@ _e.timerEvent = function(wait, cb) {
 
 
 // Change scene
-_e.changeScene = function(name) {
+_e.changeScene = function(name, p) {
 
-    this.core.changeScene(name);
+    this.core.changeScene(name, p);
 }

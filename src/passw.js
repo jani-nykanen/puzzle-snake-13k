@@ -23,7 +23,7 @@ Passw.gen = (n) => {
 Passw.check = (pw) => {
 
     let t = (pw / 10) | 0;
-    let n = (pw / PASSW_BASE - (PASSW_MUL-PASSW_MAX) ) | 0;
+    let n = (t / PASSW_BASE - (PASSW_MUL-PASSW_MAX) ) | 0;
 
     if(n < 0 || n > PASSW_MAX)
         return -1;

@@ -70,10 +70,10 @@ _g.reset = function(g) {
 
 // Called when the scene
 // is made active
-_g.activate = function(g) {
+_g.activate = function(g, p) {
 
     // Reset stage index
-    this.stageIndex = 1;
+    this.stageIndex = (p == null ? 1 : p);
     // Recreate stage
     this.stage = new Stage(this.stageIndex);
 

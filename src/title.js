@@ -30,10 +30,19 @@ let Title = function() {
         ], 
         [
         (g, ev) => ev.changeScene("game"),
-        () => {console.log("Not implemented!"); }    
+        (g) => {
+            this.pwMode = true;
+            this.pwString = "";
+            this.drawPassword(g);
+        }    
         ],
         10, 16, 12, 3
     );
+
+    // Is password mode active
+    this.pwMode = false;
+    // Password string
+    this.pwString = "";
 }
 
 
@@ -68,17 +77,74 @@ _t.redraw = function(g) {
 }
 
 
+// Draw password box
+_t.drawPassword = function(g) {
+
+    drawBoxForText(g, 11, 14, 10, 2, false);
+
+    // Header
+    g.putstr("PASSWORD:", 12, 14 );
+
+    // Password
+    g.putstr(this.pwString, 12, 15 );
+    // Number pointer
+    if(this.pwString.length < 6)
+        g.putstr("_", this.pwString.length+ 12, 15 );
+}
+
+
 // Activate
 _t.activate = function(g) {
 
     this.redraw(g);
     this.menu.cpos = 0;
     this.menu.activate(g);
+
+    this.pwMode = false;
 }
 
 
 // Keyboard event
 _t.keyPressed = function(k, g, ev) {
 
-    this.menu.keyPressed(k, g, ev);
+    let a = ev.audio;
+
+    if(this.pwMode) {
+
+        // Put character in the end of a password
+        if(this.pwString.length < 6 && 
+            k >= 48 && k <= 57) {
+
+            this.pwString += String(k-48);
+            this.drawPassword(g);
+        }
+        // Remove character
+        else if(this.pwString.length > 0 &&  k == 8) {
+
+            this.pwString = this.pwString.substr(0, this.pwString.length-1);
+            this.drawPassword(g);
+        }
+        // Accept
+        else if(k == KeyStart) {
+
+            let s = Passw.check(parseInt(this.pwString.split("").reverse().join("")));
+            if(s == -1) {
+
+                a.play("stuck");
+                this.pwMode = false;
+                this.redraw(g);
+            }
+            else {
+
+                a.play("pause");
+                this.pwMode = false;
+                ev.changeScene("game", s);
+            }
+            
+        }
+    }
+    else {
+
+        this.menu.keyPressed(k, g, ev);
+    }
 }
