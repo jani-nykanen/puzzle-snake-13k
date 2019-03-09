@@ -32,7 +32,7 @@ let Title = function() {
         (g, ev) => ev.changeScene("game"),
         () => {console.log("Not implemented!"); }    
         ],
-        9, 16, 12, 3
+        10, 16, 12, 3
     );
 }
 
@@ -62,6 +62,9 @@ _t.redraw = function(g) {
 
     // Draw menu
     this.menu.draw(g);
+
+    // Draw copyright
+    g.putstr("%2019 JANI NYK&NEN", 7, 22);
 }
 
 
