@@ -128,3 +128,18 @@ _c.addScene = function(s, name, active=false)  {
         this.activeScene = s;
     }
 };
+
+
+// Change a scene
+_c.changeScene = function(name) {
+
+    let s = this.scenes[name];
+    if(s == null) return;
+
+    this.activeScene = s;
+    if(s.activate != null) {
+
+        s.activate(this.g);
+    }
+
+}

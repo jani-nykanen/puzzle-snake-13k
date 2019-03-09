@@ -18,3 +18,10 @@ _e.timerEvent = function(wait, cb) {
 
     this.core.setTimer(wait, cb);
 }
+
+
+// Change scene
+_e.changeScene = function(name) {
+
+    this.core.changeScene(name);
+}

@@ -53,7 +53,9 @@ _m.deactivate = function(g, redraw=true) {
 
 
 // Key pressed
-_m.keyPressed = function(k, g, a) {
+_m.keyPressed = function(k, g, ev) {
+
+    let a = ev.audio;
 
     // Move cursor
     let npos = this.cpos;
@@ -80,7 +82,7 @@ _m.keyPressed = function(k, g, a) {
 
         if(this.cbs[this.cpos] != null) {
 
-            this.cbs[this.cpos] (g);
+            this.cbs[this.cpos] (g, ev);
         }
         a.play("pause");
     }

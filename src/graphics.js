@@ -12,8 +12,11 @@ let Graphics = function(loadCB) {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
-    // Fill with gray color (temporary)
-    this.fill("black");
+    // Fill with black
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, 
+        this.canvas.width, 
+        this.canvas.height);
 
     // Resize
     this.resize(window.innerWidth, window.innerHeight);
@@ -95,15 +98,15 @@ _p.resize = function(w, h) {
 }
 
 
-// Fill screen with a color
-_p.fill = function(color) {
+// Fill screen with a character
+_p.fill = function(c) {
 
-    let c = this.ctx;
-    c.fillStyle = color;
-    c.fillRect(0, 0, 
-        this.canvas.width, 
-        this.canvas.height);
+    for(let i = 0; i < this.buffer.length; ++ i) {
 
+        this.buffer[i] = c;
+        this.ubuffer[i] = true;
+    }
+    this.redraw = true;
 }
 
 

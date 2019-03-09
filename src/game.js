@@ -4,11 +4,7 @@
 // Constructor
 let Game = function() {
 
-    // Stage index
-    this.stageIndex = 1;
-
     // Create components
-    this.stage = new Stage(this.stageIndex);
     this.pause = new Menu(
         [
             "RESUME",
@@ -18,7 +14,7 @@ let Game = function() {
         [
         (g) => this.pause.deactivate(g),
         (g) => this.reset(g),
-        (g) => {console.log("Not implemented!"); }    
+        (g, ev) => ev.changeScene("title"),  
         ],
         16-4, 12 - 3, 8, 5
     );
@@ -76,6 +72,14 @@ _g.reset = function(g) {
 // is made active
 _g.activate = function(g) {
 
+    // Reset stage index
+    this.stageIndex = 1;
+    // Recreate stage
+    this.stage = new Stage(this.stageIndex);
+
+    // Deactivate pause menu
+    this.pause.deactivate(g, false);
+
     // Fill background
     this.fillBg(g);
     // Draw info
@@ -93,7 +97,7 @@ _g.keyPressed = function(k, g, ev) {
 
     if(this.pause.active) {
 
-        this.pause.keyPressed(k, g, a);
+        this.pause.keyPressed(k, g, ev);
         return;
     }
 
