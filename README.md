@@ -1,6 +1,6 @@
 ![](https://img.itch.zone/aW1nLzE5MjQyNzAucG5n/original/jP3PJm.png)
 
-**PuzzleSnake13** is a practice entry for js13k competition. Because why not.
+**PuzzleSnake13** is a "practice work" for js13k competition. Because why not.
 
 [Play on itch.io](https://jani-nykanen.itch.io/puzzlesnake13k)
 
