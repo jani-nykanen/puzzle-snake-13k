@@ -111,6 +111,9 @@ _c.draw = function() {
 
     // Refresh graphics
     this.g.refresh();
+
+    // Draw CRT effect
+    this.g.drawCRT();
 };
 
 

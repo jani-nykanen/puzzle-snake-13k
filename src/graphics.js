@@ -37,7 +37,8 @@ let Graphics = function(loadCB) {
     // Set character set loading
     this.loaded = false;
     this.chrset = null;
-    this.loadCharSet(CHAR_PATH, loadCB);
+    this.crt = null;
+    this.loadImages(CHAR_PATH, CRT_PATH, loadCB);
 
     // Dimensions in charactesr
     this.w = (this.canvas.width / 8) | 0;
@@ -73,20 +74,35 @@ _gr.displayCanvas = function() {
 }
 
 
-// Load the character set
-_gr.loadCharSet = function(path, cb) {
+// Load image
+_gr.loadImage = function(path, cb) {
 
     let image = new Image();
     image.onload = () => {
 
-        this.loaded = true;
-        if(cb != null) {
+        ++ this.loadCount;
+        if(this.loadCount == this.imgTotal) {
 
-            cb();
+            this.loaded = true;
+            if(cb != null) {
+
+                cb();
+            }
         }
     }
     image.src = path;
-    this.chrset = image;
+    return image;
+}
+
+
+// Load the character set
+_gr.loadImages = function(path1, path2, cb) {
+
+    this.imgTotal = 2;
+    this.loadCount = 0;
+
+    this.chrset = this.loadImage(path1, cb);
+    this.crt = this.loadImage(path2, cb);
 }
 
 
@@ -114,6 +130,30 @@ _gr.roundedRect = function(x, y, w, h, radius, lineWidth) {
   c.quadraticCurveTo(x, y, x+radius, y);
 
   c.stroke();
+}
+
+
+// Draw CRT effect
+_gr.drawCRT = function() {
+    
+    let c = this.crtCtx;
+    let crt = this.crtCanvas;
+    
+    // Clear area
+    c.globalAlpha = 1;
+    c.clearRect(0, 0, 
+        this.crtCanvas.width, 
+        this.crtCanvas.height);
+
+    // Draw black box in the CRT canvas
+    let r = 128/768 * crt.height;
+    this.crtCtx.strokeStyle = "black";
+    this.roundedRect(-r/4, -r/4, crt.width+r/2, crt.height+r/2, r, r/2);
+
+    // Draw scanlines
+    c.globalAlpha = 0.25;
+    c.drawImage(this.crt, 0, 0, 
+        this.crtCanvas.width, this.crtCanvas.height);
 }
 
 
@@ -149,11 +189,6 @@ _gr.resize = function(w, h) {
     crt.height = height;
     crt.style.top = top;
     crt.style.left = left;
-
-    // Draw black box in the CRT canvas
-    let r = 128/768 * height;
-    this.crtCtx.strokeStyle = "black";
-    this.roundedRect(-r/4, -r/4, crt.width+r/2, crt.height+r/2, r, r/2);
 }
 
 
