@@ -23,7 +23,7 @@ let Core = function() {
     this.timer = 0;
 
     // Needed for determining the delta time
-    this.oldTime = 0;
+    this.oldTime = -1;
 
 };
 
@@ -81,6 +81,9 @@ _c.setTimer = function(time, cb) {
 
 // Loop
 _c.loop = function(ts) {
+
+    if(this.oldTime < 0)
+        this.oldTime = ts;
 
     let delta = ts - this.oldTime;
     if(this.timer > 0) {
