@@ -7,3 +7,4 @@ git add README.md
 git add dev
 git add res
 git add lib
+git add build.sh

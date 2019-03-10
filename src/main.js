@@ -8,6 +8,7 @@ let main = () => {
 
     // Add scenes
     c.addScene(new Title(), "title", true);
+    c.addScene(new Ending(), "ending");
     c.addScene(new Game(), "game");
 
     // Run

@@ -2,7 +2,7 @@
 // (c) 2019 Jani Nykänen
 
 // Yes this is a constanst now
-const CHAR_PATH = "res/charset.png";
+const CHAR_grATH = "res/charset.png";
 
 
 // Constructor
@@ -27,7 +27,7 @@ let Graphics = function(loadCB) {
     // Set character set loading
     this.loaded = false;
     this.chrset = null;
-    this.loadCharSet(CHAR_PATH, loadCB);
+    this.loadCharSet(CHAR_grATH, loadCB);
 
     // Dimensions in charactesr
     this.w = (this.canvas.width / 8) | 0;
@@ -51,12 +51,12 @@ let Graphics = function(loadCB) {
 }
 
 
-// Why did I name this "_p", not "_g"...?
-let _p = Graphics.prototype;
+
+let _gr = Graphics.prototype;
 
 
 // Load the character set
-_p.loadCharSet = function(path, cb) {
+_gr.loadCharSet = function(path, cb) {
 
     let image = new Image();
     image.onload = () => {
@@ -73,7 +73,7 @@ _p.loadCharSet = function(path, cb) {
 
 
 // Resize
-_p.resize = function(w, h) {
+_gr.resize = function(w, h) {
 
     let c = this.canvas;
 
@@ -99,7 +99,7 @@ _p.resize = function(w, h) {
 
 
 // Fill screen with a character
-_p.fill = function(c) {
+_gr.fill = function(c) {
 
     for(let i = 0; i < this.buffer.length; ++ i) {
 
@@ -111,7 +111,7 @@ _p.fill = function(c) {
 
 
 // Translate
-_p.translate = function(x=0, y=0) {
+_gr.translate = function(x=0, y=0) {
 
     this.tx = x;
     this.ty = y;
@@ -119,7 +119,7 @@ _p.translate = function(x=0, y=0) {
 
 
 // Put a character to the screen
-_p.putchr = function(c, x, y) {
+_gr.putchr = function(c, x, y) {
 
     x += this.tx;
     y += this.ty;
@@ -147,7 +147,7 @@ _p.putchr = function(c, x, y) {
 
 
 // Put a 2x2 square
-_p.putsqr = function(sx, sy, dx, dy) {
+_gr.putsqr = function(sx, sy, dx, dy) {
     
     let c;
     for(let y = 0; y < 2; ++ y) {
@@ -162,7 +162,7 @@ _p.putsqr = function(sx, sy, dx, dy) {
 
 
 // Draw a string
-_p.putstr = function(str, dx, dy) {
+_gr.putstr = function(str, dx, dy) {
 
     let c;
     let x = dx;
@@ -186,7 +186,7 @@ _p.putstr = function(str, dx, dy) {
 
 
 // Refresh
-_p.refresh = function() {
+_gr.refresh = function() {
 
     if(!this.redraw) return;
 
@@ -220,14 +220,14 @@ _p.refresh = function() {
 
 
 // Store current buffer to memory
-_p.store = function() {
+_gr.store = function() {
 
     this.membuf = this.buffer.slice();
 }
 
 
 // Restore
-_p.restore = function() {
+_gr.restore = function() {
 
     for(let i = 0; i < this.buffer.length; ++ i) {
 

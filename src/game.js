@@ -137,7 +137,14 @@ _g.keyPressed = function(k, g, ev) {
         // Reset stage after a second
         ev.timerEvent(1000, (g) => {
 
-            this.reset(g);
+            if(this.stageIndex > MAP_DATA.length) {
+
+                ev.changeScene("ending");
+            }
+            else {
+
+                this.reset(g);
+            }
         });
     }
 }
