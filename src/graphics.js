@@ -5,6 +5,9 @@
 const CHAR_PATH = "res/charset.png";
 const CRT_PATH = "res/crt.png";
 
+// Transition time
+const TRANS_TIME = 500;
+
 
 // Constructor
 let Graphics = function(loadCB) {
@@ -21,6 +24,8 @@ let Graphics = function(loadCB) {
     this.crtCanvas.style.display = "none";
     this.crtCtx = this.crtCanvas.getContext("2d");
     this.crtCtx.imageSmoothingEnabled= false;
+    // Flicker timer
+    this.flicker = 0.0;
 
     // Fill with black
     this.ctx.fillStyle = "black";
@@ -134,11 +139,18 @@ _gr.roundedRect = function(x, y, w, h, radius, lineWidth) {
 
 
 // Draw CRT effect
-_gr.drawCRT = function() {
+_gr.drawCRT = function(delta) {
     
+    const FLICKER_SPEED = 0.05;
+    const FLICKER_BASE = 0.25;
+    const FLICKER_RANGE = 0.025;
+
     let c = this.crtCtx;
     let crt = this.crtCanvas;
     
+    // Update flicker timer
+    this.flicker += FLICKER_SPEED * (1000.0/60.0 * delta);
+
     // Clear area
     c.globalAlpha = 1;
     c.clearRect(0, 0, 
@@ -151,7 +163,7 @@ _gr.drawCRT = function() {
     this.roundedRect(-r/4, -r/4, crt.width+r/2, crt.height+r/2, r, r/2);
 
     // Draw scanlines
-    c.globalAlpha = 0.25;
+    c.globalAlpha = Math.sin(this.flicker) * FLICKER_RANGE + FLICKER_BASE;
     c.drawImage(this.crt, 0, 0, 
         this.crtCanvas.width, this.crtCanvas.height);
 }

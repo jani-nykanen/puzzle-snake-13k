@@ -95,7 +95,7 @@ _c.loop = function(ts) {
     // Draw frame
     if(this.g.loaded) {
 
-        this.draw();
+        this.draw(delta);
     }
 
     this.oldTime = ts;
@@ -107,13 +107,13 @@ _c.loop = function(ts) {
 
 
 // Draw
-_c.draw = function() {
+_c.draw = function(delta) {
 
     // Refresh graphics
     this.g.refresh();
 
     // Draw CRT effect
-    this.g.drawCRT();
+    this.g.drawCRT(delta);
 };
 
 
