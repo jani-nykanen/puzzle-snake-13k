@@ -2,7 +2,8 @@
 // (c) 2019 Jani Nykänen
 
 // Yes this is a constanst now
-const CHAR_grATH = "res/charset.png";
+const CHAR_PATH = "res/charset.png";
+const CRT_PATH = "res/crt.png";
 
 
 // Constructor
@@ -11,8 +12,15 @@ let Graphics = function(loadCB) {
     // Get canvas & context
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.ctx.imageSmoothingEnabled= false;
     // Hide canvas when loading data
     this.canvas.style.display = "none";
+
+    // CRT canvas
+    this.crtCanvas = document.getElementById("canvas_overlay");
+    this.crtCanvas.style.display = "none";
+    this.crtCtx = this.crtCanvas.getContext("2d");
+    this.crtCtx.imageSmoothingEnabled= false;
 
     // Fill with black
     this.ctx.fillStyle = "black";
@@ -29,7 +37,7 @@ let Graphics = function(loadCB) {
     // Set character set loading
     this.loaded = false;
     this.chrset = null;
-    this.loadCharSet(CHAR_grATH, loadCB);
+    this.loadCharSet(CHAR_PATH, loadCB);
 
     // Dimensions in charactesr
     this.w = (this.canvas.width / 8) | 0;
@@ -61,6 +69,7 @@ let _gr = Graphics.prototype;
 _gr.displayCanvas = function() {
 
     this.canvas.style.display = "inline";
+    this.crtCanvas.style.display = "inline";
 }
 
 
@@ -81,10 +90,38 @@ _gr.loadCharSet = function(path, cb) {
 }
 
 
+// Draw a rounded rectangle
+// Thanks to: https://www.scriptol.com/html5/canvas/rounded-rectangle.php
+_gr.roundedRect = function(x, y, w, h, radius, lineWidth) {
+
+
+  let c = this.crtCtx;
+
+  let r = x + w;
+  let b = y + h;
+
+  c.lineWidth = String(lineWidth);
+  c.beginPath();
+  
+  c.moveTo(x+radius, y);
+  c.lineTo(r-radius, y);
+  c.quadraticCurveTo(r, y, r, y+radius);
+  c.lineTo(r, y+h-radius);
+  c.quadraticCurveTo(r, b, r-radius, b);
+  c.lineTo(x+radius, b);
+  c.quadraticCurveTo(x, b, x, b-radius);
+  c.lineTo(x, y+radius);
+  c.quadraticCurveTo(x, y, x+radius, y);
+
+  c.stroke();
+}
+
+
 // Resize
 _gr.resize = function(w, h) {
 
     let c = this.canvas;
+    let crt = this.crtCanvas;
 
     // Find minimal multiplier with
     // square pixels
@@ -100,10 +137,23 @@ _gr.resize = function(w, h) {
     y = h/2 - height/2;
     
     // Set style properties
+    let top = String(y | 0) + "px";
+    let left = String(x | 0) + "px";
     c.style.height = String(height | 0) + "px";
     c.style.width = String(width | 0) + "px";
-    c.style.top = String(y | 0) + "px";
-    c.style.left = String(x | 0) + "px";
+    c.style.top = top;
+    c.style.left = left;
+
+    // Resize CRT canvas
+    crt.width = width;
+    crt.height = height;
+    crt.style.top = top;
+    crt.style.left = left;
+
+    // Draw black box in the CRT canvas
+    let r = 128/768 * height;
+    this.crtCtx.strokeStyle = "black";
+    this.roundedRect(-r/4, -r/4, crt.width+r/2, crt.height+r/2, r, r/2);
 }
 
 

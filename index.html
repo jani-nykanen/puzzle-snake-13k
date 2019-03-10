@@ -9,13 +9,16 @@
 </head>
 <body onload="main();" style="overflow: hidden;">
 
-    <div id="canvas_div" style="position: absolute; top: 0; left: 0; z-index: -1" ></div>
+    <div id="canvas_div" style="position: absolute; top: 0; left: 0;" ></div>
         <canvas id="canvas" width="256" height="192" style=
-        "position: absolute; top: 0; left: 0; z-index: -1;
+        "position: absolute; top: 0; left: 0; z-index: 0;
         image-rendering: optimizeSpeed;
         image-rendering: pixelated;
         image-rendering: -moz-crisp-edges;">
-    </canvas>
+        </canvas>
+        <canvas id="canvas_overlay" width="256" height="192" style=
+        "position: absolute; z-index: 1">
+        </canvas>
     </div> 
 
     <div id="loading">
