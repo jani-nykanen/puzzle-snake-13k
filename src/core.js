@@ -38,11 +38,14 @@ _c.onLoaded = function() {
     let a = this.activeScene;
     if(a != null && a.activate != null) {
 
-        a.activate(this.g);
+        a.activate(this.g, null, this.evMan);
     } 
 
     // Hide "loading" text
     document.getElementById("loading").style.display = "none";
+
+    // Display canvas
+    this.g.displayCanvas();
 }
 
 
@@ -139,7 +142,7 @@ _c.changeScene = function(name, p) {
     this.activeScene = s;
     if(s.activate != null) {
 
-        s.activate(this.g, p);
+        s.activate(this.g, p, this.evMan);
     }
 
 }

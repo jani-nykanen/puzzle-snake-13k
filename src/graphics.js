@@ -11,7 +11,9 @@ let Graphics = function(loadCB) {
     // Get canvas & context
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    
+    // Hide canvas when loading data
+    this.canvas.style.display = "none";
+
     // Fill with black
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, 
@@ -53,6 +55,13 @@ let Graphics = function(loadCB) {
 
 
 let _gr = Graphics.prototype;
+
+
+// Display canvas
+_gr.displayCanvas = function() {
+
+    this.canvas.style.display = "inline";
+}
 
 
 // Load the character set

@@ -36,7 +36,7 @@ let Title = function() {
             this.drawPassword(g);
         }    
         ],
-        10, 16, 12, 3
+        10, 18, 12, 3
     );
 
     // Is password mode active
@@ -55,8 +55,10 @@ _t.redraw = function(g) {
     const LOGO_X = 4;
     const LOGO_Y = 2;
 
-    // Fill to black
-    g.fill(0);
+    // Fill with blue
+    g.fill(14);
+
+    drawBoxForText(g, LOGO_X, LOGO_Y, LOGO_W, LOGO_H+2, true);
 
     // Draw logo
     g.translate(LOGO_X, LOGO_Y);
@@ -67,13 +69,13 @@ _t.redraw = function(g) {
             g.putchr(LOGO[y*LOGO_W+x]-1, x, y);
         }
     }
+    // Draw copyright
+    g.putstr("%2019 JANI NYK&NEN", 4, LOGO_H+1);
     g.translate();
 
     // Draw menu
-    this.menu.draw(g);
+    this.menu.draw(g, true);
 
-    // Draw copyright
-    g.putstr("%2019 JANI NYK&NEN", 7, 22);
 }
 
 

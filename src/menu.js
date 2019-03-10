@@ -91,12 +91,12 @@ _m.keyPressed = function(k, g, ev) {
 
 
 // Draw
-_m.draw = function(g) {
+_m.draw = function(g, shadow=false) {
 
     g.translate(this.x-1, this.y-1);
 
     // Draw box
-    drawBoxForText(g, 1, 1, this.w, this.h, false);
+    drawBoxForText(g, 1, 1, this.w, this.h, shadow);
 
     // Draw text
     let str;

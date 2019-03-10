@@ -7,7 +7,8 @@ let main = () => {
     let c = new Core();
 
     // Add scenes
-    c.addScene(new Title(), "title", true);
+    c.addScene(new Intro(), "intro", true);
+    c.addScene(new Title(), "title");
     c.addScene(new Ending(), "ending");
     c.addScene(new Game(), "game");
 
