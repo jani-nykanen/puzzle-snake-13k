@@ -46,6 +46,8 @@ _c.onLoaded = function() {
 
     // Display canvas
     this.g.displayCanvas();
+
+    this.oldTime = -1;
 }
 
 
