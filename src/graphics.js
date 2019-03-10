@@ -8,6 +8,13 @@ const CRT_PATH = "res/crt.png";
 // Transition time
 const TRANS_TIME = 500;
 
+// Transition modes
+let Transition = {
+    Off: 0,
+    In: 1,
+    Out: 2
+};
+
 
 // Constructor
 let Graphics = function(loadCB) {
@@ -64,6 +71,10 @@ let Graphics = function(loadCB) {
     // Translation
     this.tx = 0;
     this.ty = 0;
+
+    // Transition timer
+    this.transTimer = TRANS_TIME;
+    this.transMode = Transition.Out;
 }
 
 
@@ -291,37 +302,85 @@ _gr.putstr = function(str, dx, dy) {
 }
 
 
-// Refresh
-_gr.refresh = function() {
+// Draw transition
+_gr.drawTransition = function(delta) {
 
-    if(!this.redraw) return;
+    // Update transition timer
+    this.transTimer -= delta;
+    if(this.transTimer <= 0) {
 
-    // Draw character buffer
-    let sx = 0;
-    let sy = 0;
-    let c = 0;
-    for(let y = 0; y < this.h; ++ y) {
+        if(this.transMode == Transition.In) {
 
-        for(let x = 0; x < this.w; ++ x) {
+            this.transTimer = TRANS_TIME;
+            this.transMode = Transition.Out;
+        }
+        else {
 
-            // Check update buffer
-            if(this.ubuffer[y*this.w+x] == false)
-                continue;
-            this.ubuffer[y*this.w+x] = false;
-
-            // Determine image source position
-            c = this.buffer[y*this.w+x];
-            sx = (c % 16) | 0;
-            sy = (c / 16) | 0;
-
-            // Draw character
-            this.ctx.drawImage(this.chrset,
-                sx*8, sy*8, 8, 8, 
-                x*8, y*8, 8, 8);
+            this.transMode = Transition.Off;
         }
     }
 
-    this.redraw = false;
+    // Draw black bars
+    let t = this.transTimer / TRANS_TIME;
+    if(this.transMode == Transition.In)
+        t = 1.0 - t;
+
+    let y = Math.round(this.h * t / 2.0) | 0;
+
+    let c = this.ctx;
+    c.fillStyle = "black";
+    c.fillRect(0, 0, this.canvas.width, y*8);
+    c.fillRect(0, this.canvas.height-y*8, this.canvas.width, y*8);
+}
+
+
+// Refresh
+_gr.refresh = function(delta) {
+
+    let tr = this.transMode != Transition.Off;
+    if(!tr && !this.redraw) return;
+
+    if(this.transMode != Transition.In) {
+
+        // Draw character buffer
+        let sx = 0;
+        let sy = 0;
+        let c = 0;
+        for(let y = 0; y < this.h; ++ y) {
+
+            for(let x = 0; x < this.w; ++ x) {
+
+                // Check update buffer
+                if(tr && this.ubuffer[y*this.w+x] == false)
+                    continue;
+                if(!tr)
+                    this.ubuffer[y*this.w+x] = false;
+
+                // Determine image source position
+                c = this.buffer[y*this.w+x];
+                sx = (c % 16) | 0;
+                sy = (c / 16) | 0;
+
+                // Draw character
+                this.ctx.drawImage(this.chrset,
+                    sx*8, sy*8, 8, 8, 
+                    x*8, y*8, 8, 8);
+            }
+        }
+
+    }
+
+    // If transition active
+    if(tr) {
+
+        this.drawTransition(delta)
+        return;
+    }
+    else {
+
+        this.redraw = false;
+    }
+
 }
 
 
@@ -341,4 +400,12 @@ _gr.restore = function() {
         this.buffer[i] = this.membuf[i];
     }
     this.redraw = true;
+}
+
+
+// Set transition
+_gr.transition = function() {
+
+    this.transMode = Transition.In;
+    this.transTimer = TRANS_TIME;
 }

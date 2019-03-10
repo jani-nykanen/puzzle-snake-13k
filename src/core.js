@@ -55,9 +55,11 @@ _c.keyDown = function(e) {
     e.preventDefault();
 
     // Skip if still loading something
-    // or timer is active
+    // or timer is active or 
+    // is transiting
     if(!this.g.loaded ||
-        this.timer > 0) 
+        this.timer > 0 ||
+        this.g.transMode != Transition.Off) 
         return;
 
     // Call scene function
@@ -110,7 +112,7 @@ _c.loop = function(ts) {
 _c.draw = function(delta) {
 
     // Refresh graphics
-    this.g.refresh();
+    this.g.refresh(delta);
 
     // Draw CRT effect
     this.g.drawCRT(delta);
@@ -148,4 +150,5 @@ _c.changeScene = function(name, p) {
         s.activate(this.g, p, this.evMan);
     }
 
+    this.g.transition();
 }

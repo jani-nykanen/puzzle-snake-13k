@@ -143,6 +143,7 @@ _g.keyPressed = function(k, g, ev) {
             }
             else {
 
+                g.transition();
                 this.reset(g);
             }
         });
