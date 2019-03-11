@@ -15,9 +15,7 @@ Don't believe it fits 13 kilobytes? Open `build.sh`, replace `compiler.jar` with
 
 ## Libraries used
 
-Just this one: https://github.com/mneubrand/jsfxr
-
-It was pretty nice, I recommend it for js13k-like projects.
+Just this one: https://github.com/mneubrand/jsfxr. A minimized ("compiler") version is in this repo in the `lib` folder.
 
 
 -----------
