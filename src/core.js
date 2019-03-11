@@ -4,12 +4,22 @@
 
 // Constructor
 let Core = function() {
+
+    this.scenes = [];
+    this.activeScene = null;
+}
+
+
+let _c = Core.prototype;
+
+
+// Initialize
+_c.init = function() {
     
     // Create components
-    this.g = new Graphics(() => this.onLoaded());
     this.a = new AudioManager();
+    this.g = new Graphics(() => this.onLoaded());
     this.evMan = new EventManager(this, this.a);
-    this.scenes = [];
 
     // Set default events
     window.addEventListener("resize", () => 
@@ -18,7 +28,6 @@ let Core = function() {
     window.addEventListener("keydown", (e) => this.keyDown(e));
 
     // Set default values
-    this.activeScene = null;
     this.timerFunc = null;
     this.timer = 0;
 
@@ -26,9 +35,6 @@ let Core = function() {
     this.oldTime = -1;
 
 };
-
-
-let _c = Core.prototype;
 
 
 // Called when content is loaded
@@ -126,6 +132,9 @@ _c.draw = function(delta) {
 
 // Run
 _c.run = function() {
+
+    // Initialize
+    this.init();
 
     // Loop
     window.requestAnimationFrame((ts) => this.loop(ts));
